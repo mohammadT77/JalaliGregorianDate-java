@@ -4,8 +4,10 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+
+
 public class JGDate{
-    public final static String[] JALALI_DAYS = {
+	public final static String[] JALALI_DAYS = {
             "یکشنبه",
             "دوشنبه",
             "سه شنبه",
@@ -76,21 +78,7 @@ public class JGDate{
     };
     public final static SimpleDateFormat G_DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public final static SimpleDateFormat J_DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
-    public final static long GJ_TIME_DIFFERENCE = (long) (1*Math.pow(10,13)+
-            9*Math.pow(10,12)+
-            6*Math.pow(10,11)+
-            0*Math.pow(10,10)+
-            3*Math.pow(10,9)+
-            8*Math.pow(10,8)+
-            1*Math.pow(10,7)+
-            4*Math.pow(10,6)+
-            1*Math.pow(10,5)+
-            0*Math.pow(10,4)+
-            0*Math.pow(10,3)+
-            0*Math.pow(10,2)+
-            0*Math.pow(10,1)+
-            0*Math.pow(10,0));
-
+  
     protected Date jDate;
     protected Date gDate;
     protected boolean default_gregorian;
@@ -182,13 +170,6 @@ public class JGDate{
         return c;
     }
 
-
-    public static long convertGTimeToJTime(long g_time){
-        return g_time-GJ_TIME_DIFFERENCE;
-    }
-    public static long convertJTimeToGTime(long j_time){
-        return j_time+GJ_TIME_DIFFERENCE;
-    }
 
     public String toGString(){
         return G_DEFAULT_DATE_FORMAT.format(getGDate());
