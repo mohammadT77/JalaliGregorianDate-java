@@ -1,9 +1,10 @@
 package ir.ma_web.jalali_gregorian_date;
 
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+import java.util.Locale;
 
 
 public class JGDate{
@@ -107,8 +108,14 @@ public class JGDate{
     public JGDate(String string, boolean is_gregorian){
         this(Date.valueOf(string.replace('/','-')).getTime(),is_gregorian);
     }
+    public JGDate(String string){
+        this(string,true);
+    }
     public JGDate(Date date, boolean is_gregorian) {
         this(date.getTime(),is_gregorian);
+    }
+    public JGDate(Date date) {
+        this(date,true);
     }
     public JGDate(JGDate date) {
         this.gDate = date.gDate;
@@ -118,10 +125,10 @@ public class JGDate{
 
     @Override
     public boolean equals(Object obj) {
+        if(obj instanceof JGDate) return ((JGDate) obj).gDate.equals(obj);
         if(obj instanceof Long) return gDate.getTime()==(Long) obj;
-        else if(obj instanceof Date) return gDate.equals(obj)||jDate.equals(obj);
-        else if(obj instanceof String) return G_DEFAULT_DATE_FORMAT.format(jDate).equals(obj)||toJString().equals(obj)||toGString().equals(obj);
-        else return false;
+        if(obj instanceof Date) return gDate.equals(obj)||jDate.equals(obj);
+        return false;
     }
 
     public int getDayOfWeek(){
@@ -135,6 +142,13 @@ public class JGDate{
         return jDate.getTime();
     }
 
+    public long getTime(Locale locale){
+        return locale.equals(new Locale("fa"))?getJTime():getGTime();
+    }
+
+    public Date getDate(Locale locale){
+        return locale.equals(new Locale("fa"))?jDate:gDate;
+    }
     public Date getGDate(){
         return gDate;
     }
@@ -150,6 +164,9 @@ public class JGDate{
     public String getJDay_string(){
         return JALALI_DAYS[getDayOfWeek()];
     }
+    public String getDay_string(Locale locale){
+        return locale.equals(new Locale("fa"))?getJDay_string():getGDay_string();
+    }
     public String getGMonth_string(){
         return GREGORIAN_MONTHS[getGMonth()-1];
     }
@@ -158,6 +175,9 @@ public class JGDate{
     }
     public String getJMonth_string(){
         return JALALI_MONTHS[getJMonth()-1];
+    }
+    public String getMonth_string(Locale locale){
+        return locale.equals(new Locale("fa"))?getJMonth_string():getGMonth_string();
     }
     public Calendar getGCalendar(){
         Calendar c = Calendar.getInstance();
@@ -169,7 +189,9 @@ public class JGDate{
         c.setTime(jDate);
         return c;
     }
-
+    public Calendar getCalendar(Locale locale){
+        return locale.equals(new Locale("fa"))?getJCalendar():getGCalendar();
+    }
 
     public String toGString(){
         return G_DEFAULT_DATE_FORMAT.format(getGDate());
@@ -184,6 +206,9 @@ public class JGDate{
     public int getJYear(){
         return getJCalendar().get(Calendar.YEAR);
     }
+    public int getYear(Locale locale){
+        return locale.equals(new Locale("fa"))?getJYear():getGYear();
+    }
 
     public int getGMonth(){
         return getGCalendar().get(Calendar.MONTH)+1;
@@ -191,17 +216,25 @@ public class JGDate{
     public int getJMonth(){
         return getJCalendar().get(Calendar.MONTH)+1;
     }
+    public int getMonth(Locale locale){
+        return locale.equals(new Locale("fa"))?getJMonth():getGMonth();
+    }
     public int getGDay(){
         return getGCalendar().get(Calendar.DAY_OF_MONTH);
     }
     public int getJDay(){
         return getJCalendar().get(Calendar.DAY_OF_MONTH);
     }
-
+    public int getDay(Locale locale){
+        return locale.equals(new Locale("fa"))?getJDay():getGDay();
+    }
 
 
     @Override
     public String toString() {
         return default_gregorian?toGString():toJString();
+    }
+    public String toString(Locale locale) {
+        return locale.equals(new Locale("fa"))?toJString():toGString();
     }
 }

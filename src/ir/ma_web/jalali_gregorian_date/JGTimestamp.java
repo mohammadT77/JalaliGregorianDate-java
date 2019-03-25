@@ -1,10 +1,10 @@
 package ir.ma_web.jalali_gregorian_date;
 
-
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class JGTimestamp extends JGDate {
     public final static SimpleDateFormat G_DEFAULT_TS_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -18,6 +18,10 @@ public class JGTimestamp extends JGDate {
     public JGTimestamp(long time, boolean is_gregorian) {
         super(time,is_gregorian);
         this.time = new Time(time);
+    }
+    public JGTimestamp(JGDate date,Time time) {
+        super(date);
+        this.time = new Time(time.getTime());
     }
     public JGTimestamp(String string, boolean is_gregorian){
         this(Timestamp.valueOf(string.replace('/','-')).getTime(),is_gregorian);
@@ -40,6 +44,19 @@ public class JGTimestamp extends JGDate {
         return time;
     }
 
+
+    public String toGDateString() {
+        return super.toGString();
+    }
+    public String toJDateString() {
+        return super.toJString();
+    }
+    public String toDateString() {
+        return super.toString();
+    }
+    public String toDateString(Locale locale) {
+        return super.toString(locale);
+    }
     @Override
     public String toGString() {
         return super.toGString()+" "+time.toString();
@@ -50,6 +67,10 @@ public class JGTimestamp extends JGDate {
         return super.toJString()+" "+time.toString();
     }
 
+    @Override
+    public String toString(Locale locale){
+        return locale.equals(new Locale("fa"))?toJString():toGString();
+    }
 
     public String toTimeString() {
         return time.toString();
@@ -62,6 +83,9 @@ public class JGTimestamp extends JGDate {
     
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj)&&time.equals(obj);
+        if(obj instanceof JGTimestamp) return time.equals(((JGTimestamp) obj).time);
+        if(obj instanceof Long) return time.getTime()==(Long)obj;
+        if(obj instanceof Timestamp) return time.getTime()==((Timestamp)obj).getTime();
+        return false;
     }
 }
